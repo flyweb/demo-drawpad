@@ -1,0 +1,28 @@
+<html>
+<head>
+  <title>DrawPad Client</title>
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="client_drawpad.js"></script>
+  <script type="text/javascript">
+    function initClient() {
+        window.PLAYER_NO = __PLAYER__;
+        var ws = new WebSocket("ws://" + window.location.host + "/input-data");
+        ws.onopen = function () {
+            ws.send(JSON.stringify({'type':'register'}));
+            window.WEBSOCKET = ws;
+        }
+        initializeDrawpad();
+    }
+  </script>
+  <style type="text/css">
+    #cvs {
+      border: 2px solid black;
+    }
+  </style>
+</head>
+<body onload="initClient()">
+  <h1>Client page for player __PLAYER__</h1>
+  <canvas id='cvs'></canvas>
+  <div id='foo'></div>
+</body>
+</html>

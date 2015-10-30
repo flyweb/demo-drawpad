@@ -1,0 +1,32 @@
+<html>
+<head>
+  <title>DrawPad</title>
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="drawpad.js"></script>
+  <script src="sha-1.js"></script>
+  <script src="stream-reader.js"></script>
+  <script src="web-socket.js"></script>
+  <script src="server.js"></script>
+  <script type="text/javascript">
+    function initializeAll() {
+        initializeDrawpad();
+        setTimeout(function init() {
+          if (navigator.publishServer) {
+            startServer();
+          } else {
+            setTimeout(init, 1000);
+          }
+        }, 1000);
+    }
+  </script>
+  <style type="text/css">
+    #cvs {
+      border: 2px solid black;
+    }
+  </style>
+</head>
+<body onload='initializeAll()'>
+  <canvas id='cvs'></canvas>
+  <div id='foo'></div>
+</body>
+</html>
