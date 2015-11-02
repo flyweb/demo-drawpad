@@ -53,6 +53,7 @@ function initializeDrawpad() {
         if (!evt)
             return;
         cur_stroke.addPoint(evt);
+        drawStrokesOnce();
     }
     function touchcancel(evt) {
         cur_stroke.end_time = Date.now();
@@ -63,6 +64,10 @@ function initializeDrawpad() {
 }
 
 function drawStrokes() {
+    drawStrokesOnce();
+    setTimeout(drawStrokes, 1);
+}
+function drawStrokesOnce() {
     try {
         var canvas = window.CANVAS;
         var ctx = canvas.getContext('2d');
@@ -74,7 +79,6 @@ function drawStrokes() {
     } catch(err) {
         showMessage(err.toString());
     }
-    setTimeout(drawStrokes, 1);
 }
 
 function generateColor(player_id) {

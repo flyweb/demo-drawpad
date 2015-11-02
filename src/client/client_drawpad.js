@@ -49,6 +49,7 @@ function initializeDrawpad() {
         sendData({type:'start', x:evt.x, y:evt.y});
     }
     function touchend(evt) {
+        cur_stroke.end_time = Date.now();
         cur_stroke = null;
         sendData({type:'end'});
     }
@@ -60,8 +61,10 @@ function initializeDrawpad() {
             return;
         cur_stroke.addPoint(evt);
         sendData({type:'move', x:evt.x, y:evt.y});
+        drawStrokesOnce();
     }
     function touchcancel(evt) {
+        cur_stroke.end_time = Date.now();
         cur_stroke = null;
         sendData({type:'end'});
     }
@@ -70,6 +73,11 @@ function initializeDrawpad() {
 }
 
 function drawStrokes() {
+    drawStrokesOnce();
+    setTimeout(drawStrokes, 1);
+}
+
+function drawStrokesOnce() {
     try {
         var canvas = window.CANVAS;
         var ctx = canvas.getContext('2d');
@@ -81,7 +89,6 @@ function drawStrokes() {
     } catch(err) {
         showMessage(err.toString());
     }
-    setTimeout(drawStrokes, 1);
 }
 
 function addPlayer() {
